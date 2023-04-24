@@ -41,32 +41,33 @@ class OrderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        
-                $order = new Order([
+    {   
+              $order = $request->all();
+
+                $active_order = new Order([
                     'user_id'=>Auth::id(),
-                    'town'=>$request->get('town'),
-                    'street'=>$request->get('street'),
-                    'house'=>$request->get('house'),
-                    'apartment'=>$request->get('apartment'),
-                    'phone_number'=>$request->get('phone'),
-                    'special_requests'=>$request->get('queries'),
+                    'town'=>$order['town'],
+                    'street'=>$order['street'],
+                    'house'=>$order['house'],
+                    'apartment'=>$order['apartment'],
+                    'phone_number'=>$order['phone'],
+                    'special_requests'=>$order['queries'],
                 ]);
-                $order->save();
+                $active_order->save();
 
                 $complete_order = new CompleteOrder([
                     'user_id'=>Auth::id(),
-                    'town'=>$request->get('town'),
-                    'street'=>$request->get('street'),
-                    'house'=>$request->get('house'),
-                    'apartment'=>$request->get('apartment'),
-                    'phone_number'=>$request->get('phone'),
-                    'special_requests'=>$request->get('queries'),
+                    'town'=>$order['town'],
+                    'street'=>$order['street'],
+                    'house'=>$order['house'],
+                    'apartment'=>$order['apartment'],
+                    'phone_number'=>$order['phone'],
+                    'special_requests'=>$order['queries'],
                 ]);
                 $complete_order->save();
 
-                 $isUser =  Cart::where('user_id','=',Auth::id())->get();
-                 $orderNumber =  DB::table('orders')->latest('id')->where('user_id','=',Auth::id())->get()->first();
+                  $isUser =  Cart::where('user_id','=',Auth::id())->get();
+                  $orderNumber =  DB::table('orders')->latest('id')->where('user_id','=',Auth::id())->get()->first();
                
                   
                  foreach($isUser as $key => $value) { 
@@ -88,7 +89,7 @@ class OrderController extends Controller
                     ]);
                  }
 
-                 $deleted = DB::table('user_pizza')->where('user_id', '=', Auth::id())->delete();
+                 DB::table('user_pizza')->where('user_id', '=', Auth::id())->delete();
 
                  $log = new Log([
                     'user_id'=>Auth::id(),

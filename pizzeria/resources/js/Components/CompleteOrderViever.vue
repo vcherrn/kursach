@@ -14,11 +14,6 @@
 
                 <!-- <button @click="loadOrders()" class="btn btn-primary">Посмотреть заказы</button> -->
 
-                
-
-
-
-
                 <div class="flex-table-content flex flex-column bgclass border border-secondary" v-for=" (pizza, i) in this.orig_order">
 
 
